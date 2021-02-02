@@ -23,8 +23,15 @@ namespace SalesWeb.Controllers
             return View();
         }
 
+        public IActionResult About()
+        {
+            ViewData["Description"] = "SalesWeb, application of sales.";
+            return View();
+        }
+
         public IActionResult Privacy()
         {
+            ViewData["Email"] = "guilherme@gmail.com";
             return View();
         }
 
