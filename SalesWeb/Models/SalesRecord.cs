@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using SalesWeb.Models.Enums;
 
 namespace SalesWeb.Models
 {
     public class SalesRecord
     {
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public double Amount { get; set; }
