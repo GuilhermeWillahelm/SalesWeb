@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using SalesWeb.Data;
 using SalesWeb.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace SalesWeb.Services
 {
@@ -33,6 +32,28 @@ namespace SalesWeb.Services
             return await result.Include(x => x.Seller).Include(x => x.Seller.Department)
                 .OrderByDescending(x => x.Date).ToListAsync();
                     
+        }
+
+        public async Task<List<IGrouping<Department,SalesRecord>>> FindByDateGrouoAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            var result = from obj in _context.SalesRecord select obj;
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Date >= minDate.Value);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Date <= maxDate.Value);
+            }
+
+            var data = await result
+                .Include(x => x.Seller)
+                .Include(x => x.Seller.Department)
+                .OrderByDescending(x => x.Date)
+                .ToListAsync();
+
+            return data.GroupBy(x => x.Seller.Department).ToList();
+            //return await result.GroupBy(x => x.Seller.Department).ToListAsync();
         }
 
     }
